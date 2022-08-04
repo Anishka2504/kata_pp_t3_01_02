@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="'User update form'"></title>
 </head>
 <body>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+
+    <div th:if="${user.id != null}">
+        <h1>Update form</h1>
+        <a href="logout">Logout</a><br/><br/>
+        <form method="post" th:Object="${user}" th:action="@{/users/update}">
+            <div>
+                <label>Name:</label>
+                <input th:field="*{name}" type="text"/>
+            </div>
+            <div>
+                <label>Last name:</label>
+                <input th:field="*{lastName}" type="text">
+            </div>
+            <div>
+                <label>Middle name:</label>
+                <input th:field="*{middleName}" type="text">
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>

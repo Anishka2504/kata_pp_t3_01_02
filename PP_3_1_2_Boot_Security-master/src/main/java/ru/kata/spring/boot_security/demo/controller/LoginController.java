@@ -7,4 +7,7 @@ public interface LoginController {
 
     @GetMapping({"/login", "/"})
     String login(ModelMap modelMap);
+
+    @GetMapping("/login_error")
+    String loginError(ModelMap model);
 }

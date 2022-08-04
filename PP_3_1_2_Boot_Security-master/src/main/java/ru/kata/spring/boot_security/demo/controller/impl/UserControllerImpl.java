@@ -14,13 +14,13 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @RequestMapping("/user")
 public class UserControllerImpl implements UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
 
     @Override
     public String userPage(ModelMap modelMap) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelMap.addAttribute("user", userService.findByLogin(user.getUsername()));
+        modelMap.addAttribute("user", userService.findByLogin(user.getLogin()));
         return "user";
     }
 }

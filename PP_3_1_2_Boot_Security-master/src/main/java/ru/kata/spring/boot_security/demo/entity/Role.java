@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "role", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Role extends NameEntity implements GrantedAuthority {
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "role_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"),

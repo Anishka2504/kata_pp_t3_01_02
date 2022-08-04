@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.kata.spring.boot_security.demo.entity.parent.NameEntity;
@@ -14,12 +16,15 @@ import java.util.Set;
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "login")})
 public class User extends NameEntity implements UserDetails {
 
+    @Getter
     @Column(name = "last_name")
     private String lastName;
 
+    @Getter
     @Column(name = "middle_name")
     private String middleName;
 
+    @Getter
     @Column
     private String login;
 
@@ -27,7 +32,7 @@ public class User extends NameEntity implements UserDetails {
     private String password;
 
     @Column(name = "non_expired")
-    private String nonExpired;
+    private boolean nonExpired;
 
     @Column(name = "non_locked")
     private boolean nonLocked;
@@ -37,7 +42,7 @@ public class User extends NameEntity implements UserDetails {
 
     private boolean enabled;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"),
@@ -46,36 +51,36 @@ public class User extends NameEntity implements UserDetails {
     //------------------------------------------------------------------
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return getName();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return nonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return nonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
